@@ -112,21 +112,21 @@
                     </div>
                     <div class="mb-3" id="target_staff_container">
                         <label class="form-label fw-semibold">Pilih Staff <span class="text-danger">*</span></label>
-                        <select name="to_user_id" id="to_user_id" class="form-select">
-                            <option value="">-- Pilih Penerima --</option>
+                        <select name="to_user_id[]" id="to_user_id" class="form-select" multiple size="4">
                             @foreach($users as $u)
                             <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->role }})</option>
                             @endforeach
                         </select>
+                        <small class="text-muted">Tahan tombol Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu.</small>
                     </div>
                     <div class="mb-3" id="target_division_container" style="display:none;">
                         <label class="form-label fw-semibold">Pilih Divisi <span class="text-danger">*</span></label>
-                        <select name="division_id" id="division_id" class="form-select">
-                            <option value="">-- Pilih Divisi --</option>
+                        <select name="division_id[]" id="division_id" class="form-select" multiple size="4">
                             @foreach($divisions as $div)
                             <option value="{{ $div->id }}">{{ $div->name }}</option>
                             @endforeach
                         </select>
+                        <small class="text-muted">Tahan tombol Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu.</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Sifat <span class="text-danger">*</span></label>

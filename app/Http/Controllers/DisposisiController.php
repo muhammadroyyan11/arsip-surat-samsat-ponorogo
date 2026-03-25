@@ -44,8 +44,8 @@ class DisposisiController extends Controller
         $request->validate([
             'surat_masuk_id' => 'required',
             'target_type' => 'required|in:staff,division,all',
-            'to_user_id' => 'required_if:target_type,staff',
-            'division_id' => 'required_if:target_type,division',
+            'to_user_id' => 'required_if:target_type,staff|array',
+            'division_id' => 'required_if:target_type,division|array',
             'sifat' => 'required',
             'catatan_disposisi' => 'nullable',
             'deadline' => 'nullable|date'
@@ -58,10 +58,10 @@ class DisposisiController extends Controller
             $userIds = User::where('id', '!=', auth()->id())->pluck('id')->toArray();
         } elseif ($type == 'division') {
             $userIds = User::whereHas('staff', function($q) use ($request) {
-                $q->where('division_id', $request->division_id);
+                $q->whereIn('division_id', $request->division_id);
             })->where('id', '!=', auth()->id())->pluck('id')->toArray();
         } else {
-            $userIds = [$request->to_user_id];
+            $userIds = $request->to_user_id;
         }
 
         if (empty($userIds)) {
