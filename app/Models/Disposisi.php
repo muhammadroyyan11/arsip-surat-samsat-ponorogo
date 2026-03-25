@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Disposisi extends Model
 {
     use HasFactory;
+    protected $table = 'disposis';
     protected $guarded = [];
 
     public function suratMasuk()
