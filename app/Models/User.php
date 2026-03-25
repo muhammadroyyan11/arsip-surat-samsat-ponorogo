@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Disposisi::class, 'from_user_id');
     }
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class, 'staff_id');
+    }
 }
