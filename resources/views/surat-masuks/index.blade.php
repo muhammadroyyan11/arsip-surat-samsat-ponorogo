@@ -233,5 +233,22 @@
 
     // Call it initially just in case
     toggleTargetInput();
+
+    // Initialize Select2
+    $('#to_user_id').select2({
+        theme: 'bootstrap-5',
+        dropdownParent: $('#modalDisposisi'),
+        placeholder: '-- Pilih Penerima --',
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#division_id').select2({
+        theme: 'bootstrap-5',
+        dropdownParent: $('#modalDisposisi'),
+        placeholder: '-- Pilih Divisi --',
+        allowClear: true,
+        width: '100%'
+    });
 </script>
 @endpush
