@@ -59,4 +59,9 @@ class DivisionController extends Controller
         Excel::import(new DivisionsImport, $request->file('file'));
         return redirect()->back()->with('success', 'Data divisi berhasil diimpor.');
     }
+
+    public function template()
+    {
+        return Excel::download(new DivisionsExport(true), 'template_divisi.xlsx');
+    }
 }

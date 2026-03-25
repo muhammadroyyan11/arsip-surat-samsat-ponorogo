@@ -43,23 +43,44 @@ class DisposisiController extends Controller
     {
         $request->validate([
             'surat_masuk_id' => 'required',
-            'to_user_id' => 'required',
+            'target_type' => 'required|in:staff,division,all',
+            'to_user_id' => 'required_if:target_type,staff',
+            'division_id' => 'required_if:target_type,division',
             'sifat' => 'required',
             'catatan_disposisi' => 'nullable',
             'deadline' => 'nullable|date'
         ]);
 
-        Disposisi::create([
-            'surat_masuk_id' => $request->surat_masuk_id,
-            'from_user_id' => auth()->id(),
-            'to_user_id' => $request->to_user_id,
-            'sifat' => $request->sifat,
-            'catatan_disposisi' => $request->catatan_disposisi,
-            'deadline' => $request->deadline,
-            'status' => 'Pending'
-        ]);
+        $type = $request->target_type;
+        $userIds = [];
 
-        return response()->json(['success' => true, 'message' => 'Disposisi berhasil dikirim.']);
+        if ($type == 'all') {
+            $userIds = User::where('id', '!=', auth()->id())->pluck('id')->toArray();
+        } elseif ($type == 'division') {
+            $userIds = User::whereHas('staff', function($q) use ($request) {
+                $q->where('division_id', $request->division_id);
+            })->where('id', '!=', auth()->id())->pluck('id')->toArray();
+        } else {
+            $userIds = [$request->to_user_id];
+        }
+
+        if (empty($userIds)) {
+            return response()->json(['success' => false, 'message' => 'Tidak ada penerima yang ditemukan untuk target ini.'], 400);
+        }
+
+        foreach ($userIds as $uid) {
+            Disposisi::create([
+                'surat_masuk_id' => $request->surat_masuk_id,
+                'from_user_id' => auth()->id(),
+                'to_user_id' => $uid,
+                'sifat' => $request->sifat,
+                'catatan_disposisi' => $request->catatan_disposisi,
+                'deadline' => $request->deadline,
+                'status' => 'Pending'
+            ]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Disposisi berhasil dikirim ke ' . count($userIds) . ' penerima.']);
     }
 
     public function markDone($id)

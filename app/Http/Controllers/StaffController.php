@@ -65,4 +65,9 @@ class StaffController extends Controller
         Excel::import(new StaffsImport, $request->file('file'));
         return redirect()->back()->with('success', 'Data staff berhasil diimpor.');
     }
+
+    public function template()
+    {
+        return Excel::download(new StaffsExport(true), 'template_staff.xlsx');
+    }
 }

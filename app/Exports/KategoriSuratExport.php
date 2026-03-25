@@ -8,13 +8,23 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class KategoriSuratExport implements FromCollection, WithHeadings
 {
+    protected $isTemplate;
+
+    public function __construct($isTemplate = false)
+    {
+        $this->isTemplate = $isTemplate;
+    }
+
     public function collection()
     {
-        return KategoriSurat::select('id', 'name')->get();
+        if ($this->isTemplate) {
+            return collect([]);
+        }
+        return KategoriSurat::select('name')->get();
     }
 
     public function headings(): array
     {
-        return ['ID', 'Nama Kategori'];
+        return ['nama_kategori'];
     }
 }

@@ -59,4 +59,9 @@ class PositionController extends Controller
         Excel::import(new PositionsImport, $request->file('file'));
         return redirect()->back()->with('success', 'Data jabatan berhasil diimpor.');
     }
+
+    public function template()
+    {
+        return Excel::download(new PositionsExport(true), 'template_jabatan.xlsx');
+    }
 }

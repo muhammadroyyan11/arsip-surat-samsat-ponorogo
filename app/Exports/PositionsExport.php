@@ -8,13 +8,23 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class PositionsExport implements FromCollection, WithHeadings
 {
+    protected $isTemplate;
+
+    public function __construct($isTemplate = false)
+    {
+        $this->isTemplate = $isTemplate;
+    }
+
     public function collection()
     {
-        return Position::select('id', 'name')->get();
+        if ($this->isTemplate) {
+            return collect([]);
+        }
+        return Position::select('name')->get();
     }
 
     public function headings(): array
     {
-        return ['ID', 'Nama Jabatan'];
+        return ['nama_jabatan'];
     }
 }

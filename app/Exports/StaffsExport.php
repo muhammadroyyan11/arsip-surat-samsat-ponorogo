@@ -9,8 +9,18 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class StaffsExport implements FromCollection, WithHeadings, WithMapping
 {
+    protected $isTemplate;
+
+    public function __construct($isTemplate = false)
+    {
+        $this->isTemplate = $isTemplate;
+    }
+
     public function collection()
     {
+        if ($this->isTemplate) {
+            return collect([]);
+        }
         return Staff::with(['division', 'position'])->get();
     }
 
@@ -28,6 +38,6 @@ class StaffsExport implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return ['NIP', 'Nama', 'No HP', 'Alamat', 'Divisi', 'Jabatan'];
+        return ['nip', 'nama', 'no_hp', 'alamat', 'divisi', 'jabatan'];
     }
 }

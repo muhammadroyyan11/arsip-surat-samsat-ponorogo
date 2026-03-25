@@ -33,7 +33,8 @@ class SuratMasukController extends Controller
         }
         $kategories = KategoriSurat::all();
         $users = User::where('id', '!=', auth()->id())->get();
-        return view('surat-masuks.index', compact('kategories', 'users'));
+        $divisions = \App\Models\Division::all();
+        return view('surat-masuks.index', compact('kategories', 'users', 'divisions'));
     }
 
     public function store(Request $request)

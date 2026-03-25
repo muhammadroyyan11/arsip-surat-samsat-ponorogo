@@ -104,6 +104,7 @@
                     <div class="alert alert-info py-2 small">
                         Pastikan file excel Anda memiliki header kolom (sesuai template Export): 
                         <br><b>nip, nama, no_hp, alamat, divisi, jabatan</b>
+                        <br><a href="{{ route('staffs.template') }}" class="alert-link"><i class="fas fa-download"></i> Download Template</a>
                     </div>
                     <div class="mb-3">
                         <label>Pilih File Excel (.xlsx) <span class="text-danger">*</span></label>

@@ -59,4 +59,9 @@ class KategoriSuratController extends Controller
         Excel::import(new KategoriSuratImport, $request->file('file'));
         return redirect()->back()->with('success', 'Data kategori surat berhasil diimpor.');
     }
+
+    public function template()
+    {
+        return Excel::download(new KategoriSuratExport(true), 'template_kategori_surat.xlsx');
+    }
 }

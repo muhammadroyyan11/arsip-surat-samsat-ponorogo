@@ -66,10 +66,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-info py-2 small">
+                        Pastikan file excel Anda memiliki header kolom yang sesuai.<br>
+                        <a href="{{ route('divisions.template') }}" class="alert-link"><i class="fas fa-download"></i> Download Template</a>
+                    </div>
                     <div class="mb-3">
                         <label>Pilih File Excel (.xlsx) <span class="text-danger">*</span></label>
                         <input type="file" name="file" class="form-control" required accept=".xlsx, .xls, .csv">
-                        <small class="text-muted">Pastikan ada kolom header <b>nama_divisi</b> di baris pertama.</small>
                     </div>
                 </div>
                 <div class="modal-footer">

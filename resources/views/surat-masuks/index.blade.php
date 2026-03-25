@@ -103,11 +103,28 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Tujukan Ke <span class="text-danger">*</span></label>
-                        <select name="to_user_id" class="form-select" required>
+                        <label class="form-label fw-semibold">Tipe Target <span class="text-danger">*</span></label>
+                        <select name="target_type" id="target_type" class="form-select" required onchange="toggleTargetInput()">
+                            <option value="staff">Per Staff (Personal)</option>
+                            <option value="division">Per Divisi (Broadcast)</option>
+                            <option value="all">Semua Staff (Broadcast All)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="target_staff_container">
+                        <label class="form-label fw-semibold">Pilih Staff <span class="text-danger">*</span></label>
+                        <select name="to_user_id" id="to_user_id" class="form-select">
                             <option value="">-- Pilih Penerima --</option>
                             @foreach($users as $u)
                             <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->role }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3" id="target_division_container" style="display:none;">
+                        <label class="form-label fw-semibold">Pilih Divisi <span class="text-danger">*</span></label>
+                        <select name="division_id" id="division_id" class="form-select">
+                            <option value="">-- Pilih Divisi --</option>
+                            @foreach($divisions as $div)
+                            <option value="{{ $div->id }}">{{ $div->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -193,5 +210,28 @@
         $('#formData')[0].reset();
         $('.is-invalid').removeClass('is-invalid');
     }
+
+    function toggleTargetInput() {
+        const type = $('#target_type').val();
+        if (type == 'staff') {
+            $('#target_staff_container').show();
+            $('#to_user_id').prop('required', true);
+            $('#target_division_container').hide();
+            $('#division_id').prop('required', false);
+        } else if (type == 'division') {
+            $('#target_staff_container').hide();
+            $('#to_user_id').prop('required', false);
+            $('#target_division_container').show();
+            $('#division_id').prop('required', true);
+        } else {
+            $('#target_staff_container').hide();
+            $('#to_user_id').prop('required', false);
+            $('#target_division_container').hide();
+            $('#division_id').prop('required', false);
+        }
+    }
+
+    // Call it initially just in case
+    toggleTargetInput();
 </script>
 @endpush

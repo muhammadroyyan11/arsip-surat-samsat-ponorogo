@@ -8,13 +8,23 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DivisionsExport implements FromCollection, WithHeadings
 {
+    protected $isTemplate;
+
+    public function __construct($isTemplate = false)
+    {
+        $this->isTemplate = $isTemplate;
+    }
+
     public function collection()
     {
-        return Division::select('id', 'name')->get();
+        if ($this->isTemplate) {
+            return collect([]);
+        }
+        return Division::select('name')->get();
     }
 
     public function headings(): array
     {
-        return ['ID', 'Nama Divisi'];
+        return ['nama_divisi'];
     }
 }
