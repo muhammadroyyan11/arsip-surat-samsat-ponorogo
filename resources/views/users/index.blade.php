@@ -78,7 +78,14 @@
                     <div class="row">
                         @foreach($sections as $section)
                         <div class="col-md-6 mb-4">
-                            <h6 class="fw-bold border-bottom pb-2">{{ $section->section_name }}</h6>
+                            <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                                <h6 class="fw-bold mb-0">{{ $section->section_name }}</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input select-all-section" type="checkbox" id="section_{{ $section->id }}" onclick="toggleSection({{ $section->id }}, this.checked)">
+                                    <label class="form-check-label small text-muted" for="section_{{ $section->id }}">Pilih Semua</label>
+                                </div>
+                            </div>
+                            <div class="section-menus-{{ $section->id }}">
                             @foreach($section->menus as $menu)
                             <div class="form-check">
                                 <input class="form-check-input menu-checkbox" type="checkbox" name="menus[]" value="{{ $menu->id }}" id="menu_{{ $menu->id }}">
@@ -87,6 +94,7 @@
                                 </label>
                             </div>
                             @endforeach
+                            </div>
                         </div>
                         @endforeach
                     </div>
@@ -124,7 +132,7 @@
     }
 
     function manageAccess(userId) {
-        $('.menu-checkbox').prop('checked', false);
+        $('.menu-checkbox, .select-all-section').prop('checked', false);
         $('#formAkses').attr('action', `/users/${userId}/access`);
         
         axios.get(`/users/${userId}/access`)
@@ -138,6 +146,10 @@
             .catch(err => {
                 Swal.fire('Error', 'Gagal memuat akses', 'error');
             });
+    }
+
+    function toggleSection(sectionId, isChecked) {
+        $(`.section-menus-${sectionId} .menu-checkbox`).prop('checked', isChecked);
     }
 </script>
 @endpush

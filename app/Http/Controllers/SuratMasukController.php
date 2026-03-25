@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SuratMasuk;
 use App\Models\KategoriSurat;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +23,8 @@ class SuratMasukController extends Controller
                     return $row->file_path ? '<a href="'.asset('storage/'.$row->file_path).'" target="_blank" class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>' : '-';
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<button data-url="'.route('surat-masuks.update', $row->id).'" class="btn btn-sm btn-primary btn-edit" data-name="'.$row->nomor_surat.'" data-nomor="'.$row->nomor_surat.'" data-tglsurat="'.$row->tanggal_surat.'" data-tglterima="'.$row->tanggal_terima.'" data-pengirim="'.$row->pengirim.'" data-perihal="'.$row->perihal.'" data-kategori="'.$row->kategori_id.'"><i class="fas fa-edit"></i></button>';
+                    $btn = '<button onclick="openDisposisi('.$row->id.')" class="btn btn-sm btn-warning text-white"><i class="fas fa-exchange-alt"></i> Disposisi</button> ';
+                    $btn .= '<button data-url="'.route('surat-masuks.update', $row->id).'" class="btn btn-sm btn-primary btn-edit" data-name="'.$row->nomor_surat.'" data-nomor="'.$row->nomor_surat.'" data-tglsurat="'.$row->tanggal_surat.'" data-tglterima="'.$row->tanggal_terima.'" data-pengirim="'.$row->pengirim.'" data-perihal="'.$row->perihal.'" data-kategori="'.$row->kategori_id.'"><i class="fas fa-edit"></i></button>';
                     $btn .= ' <button data-url="'.route('surat-masuks.destroy', $row->id).'" data-name="'.$row->nomor_surat.'" class="btn btn-sm btn-danger btn-delete"><i class="fas fa-trash"></i></button>';
                     return $btn;
                 })
@@ -30,7 +32,8 @@ class SuratMasukController extends Controller
                 ->make(true);
         }
         $kategories = KategoriSurat::all();
-        return view('surat-masuks.index', compact('kategories'));
+        $users = User::where('id', '!=', auth()->id())->get();
+        return view('surat-masuks.index', compact('kategories', 'users'));
     }
 
     public function store(Request $request)

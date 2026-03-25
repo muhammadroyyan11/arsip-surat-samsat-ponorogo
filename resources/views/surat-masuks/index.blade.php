@@ -89,6 +89,54 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Disposisi -->
+<div class="modal fade" id="modalDisposisi" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+            <form id="formDisposisi" class="ajax-form" action="{{ route('disposis.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="surat_masuk_id" id="disp_surat_id">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fw-bold text-white">Kirim Disposisi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tujukan Ke <span class="text-danger">*</span></label>
+                        <select name="to_user_id" class="form-select" required>
+                            <option value="">-- Pilih Penerima --</option>
+                            @foreach($users as $u)
+                            <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->role }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Sifat <span class="text-danger">*</span></label>
+                        <select name="sifat" class="form-select" required>
+                            <option value="Biasa">Biasa</option>
+                            <option value="Penting">Penting</option>
+                            <option value="Segera">Segera</option>
+                            <option value="Rahasia">Rahasia</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tenggat Waktu (Sensitif SAMSAT)</label>
+                        <input type="date" name="deadline" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Instruksi / Catatan <span class="text-danger">*</span></label>
+                        <textarea name="catatan_disposisi" class="form-control" rows="3" required placeholder="Contoh: Segera tindaklanjuti, buat laporan..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning text-white"><i class="fas fa-paper-plane"></i> Kirim Disposisi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -131,6 +179,12 @@
             $('#modalForm').modal('show');
         });
     });
+
+    function openDisposisi(id) {
+        $('#formDisposisi')[0].reset();
+        $('#disp_surat_id').val(id);
+        $('#modalDisposisi').modal('show');
+    }
 
     function resetForm() {
         $('#modalTitle').text('Tambah Surat Masuk');

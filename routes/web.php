@@ -37,9 +37,7 @@ Route::middleware('auth')->group(function () {
         return redirect('/dashboard');
     });
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     // Mocks for Phase 4 to support Sidebar linking without crashing
     Route::resource('divisions', \App\Http\Controllers\DivisionController::class);
@@ -54,4 +52,10 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('surat-masuks', \App\Http\Controllers\SuratMasukController::class);
     Route::resource('surat-keluars', \App\Http\Controllers\SuratKeluarController::class);
+
+    Route::resource('disposis', \App\Http\Controllers\DisposisiController::class);
+    Route::post('disposis/{id}/done', [\App\Http\Controllers\DisposisiController::class, 'markDone']);
+
+    Route::resource('menus', \App\Http\Controllers\MenuController::class);
+    Route::resource('menu-sections', \App\Http\Controllers\MenuSectionController::class);
 });

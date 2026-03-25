@@ -12,4 +12,5 @@ class SuratMasuk extends Model
 
     public function kategori() { return $this->belongsTo(KategoriSurat::class, 'kategori_id'); }
     public function user() { return $this->belongsTo(User::class); }
+    public function disposis() { return $this->hasMany(Disposisi::class, 'surat_masuk_id'); }
 }

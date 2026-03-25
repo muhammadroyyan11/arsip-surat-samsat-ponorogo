@@ -9,4 +9,8 @@ class Menu extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    public function section()
+    {
+        return $this->belongsTo(MenuSection::class, 'section_id');
+    }
 }

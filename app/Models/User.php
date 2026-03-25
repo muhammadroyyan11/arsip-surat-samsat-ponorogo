@@ -48,8 +48,13 @@ class User extends Authenticatable
         return $this->hasMany(UserMenu::class);
     }
 
-    public function staff()
+    public function receivedDispositions()
     {
-        return $this->belongsTo(Staff::class, 'staff_id');
+        return $this->hasMany(Disposisi::class, 'to_user_id');
+    }
+
+    public function sentDispositions()
+    {
+        return $this->hasMany(Disposisi::class, 'from_user_id');
     }
 }
