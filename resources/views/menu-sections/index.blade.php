@@ -3,6 +3,9 @@
 @section('title', 'Manajemen Section Menu (Header)')
 
 @section('actions')
+<a href="{{ route('menus.index') }}" class="btn btn-secondary me-2">
+    <i class="fas fa-arrow-left"></i> Kembali ke Menu
+</a>
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSection" onclick="resetForm()">
     <i class="fas fa-plus"></i> Tambah Section
 </button>

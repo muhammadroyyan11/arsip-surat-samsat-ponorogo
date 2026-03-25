@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\KategoriSurat;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\KategoriSuratExport;
+use App\Imports\KategoriSuratImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KategoriSuratController extends Controller
 {
@@ -43,5 +46,17 @@ class KategoriSuratController extends Controller
     {
         $kategori_surat->delete();
         return response()->json(['success' => true, 'message' => 'Kategori berhasil dihapus.']);
+    }
+
+    public function export()
+    {
+        return Excel::download(new KategoriSuratExport, 'kategori_surat.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|mimes:xlsx,xls,csv']);
+        Excel::import(new KategoriSuratImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Data kategori surat berhasil diimpor.');
     }
 }

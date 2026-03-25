@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\PositionsExport;
+use App\Imports\PositionsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PositionController extends Controller
 {
@@ -43,5 +46,17 @@ class PositionController extends Controller
     {
         $position->delete();
         return response()->json(['success' => true, 'message' => 'Posisi berhasil dihapus.']);
+    }
+
+    public function export()
+    {
+        return Excel::download(new PositionsExport, 'positions.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|mimes:xlsx,xls,csv']);
+        Excel::import(new PositionsImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Data jabatan berhasil diimpor.');
     }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Division;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\DivisionsExport;
+use App\Imports\DivisionsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DivisionController extends Controller
 {
@@ -43,5 +46,17 @@ class DivisionController extends Controller
     {
         $division->delete();
         return response()->json(['success' => true, 'message' => 'Divisi berhasil dihapus.']);
+    }
+
+    public function export()
+    {
+        return Excel::download(new DivisionsExport, 'divisions.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|mimes:xlsx,xls,csv']);
+        Excel::import(new DivisionsImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Data divisi berhasil diimpor.');
     }
 }

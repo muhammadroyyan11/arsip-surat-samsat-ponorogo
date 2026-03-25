@@ -3,6 +3,12 @@
 @section('title', 'Manajemen Staff')
 
 @section('actions')
+<a href="{{ route('staffs.export') }}" class="btn btn-success me-2">
+    <i class="fas fa-file-excel"></i> Export Excel
+</a>
+<button class="btn btn-warning text-dark me-2" data-bs-toggle="modal" data-bs-target="#modalImport">
+    <i class="fas fa-file-import"></i> Import Excel
+</button>
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalForm" onclick="resetForm()">
     <i class="fas fa-plus"></i> Tambah Staff
 </button>
@@ -78,6 +84,35 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Import -->
+<div class="modal fade" id="modalImport" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('staffs.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Staff dari Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info py-2 small">
+                        Pastikan file excel Anda memiliki header kolom (sesuai template Export): 
+                        <br><b>nip, nama, no_hp, alamat, divisi, jabatan</b>
+                    </div>
+                    <div class="mb-3">
+                        <label>Pilih File Excel (.xlsx) <span class="text-danger">*</span></label>
+                        <input type="file" name="file" class="form-control" required accept=".xlsx, .xls, .csv">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning text-dark">Import</button>
                 </div>
             </form>
         </div>

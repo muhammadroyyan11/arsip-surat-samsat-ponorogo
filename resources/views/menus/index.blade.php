@@ -3,6 +3,9 @@
 @section('title', 'Manajemen Menu & Hirarki')
 
 @section('actions')
+<a href="{{ route('menu-sections.index') }}" class="btn btn-warning text-white me-2">
+    <i class="fas fa-layer-group"></i> Kelola Section (Header)
+</a>
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMenu" onclick="resetForm()">
     <i class="fas fa-plus"></i> Tambah Menu
 </button>

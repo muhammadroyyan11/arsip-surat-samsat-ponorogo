@@ -40,10 +40,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     // Mocks for Phase 4 to support Sidebar linking without crashing
+    Route::post('divisions/import', [\App\Http\Controllers\DivisionController::class, 'import'])->name('divisions.import');
+    Route::get('divisions/export', [\App\Http\Controllers\DivisionController::class, 'export'])->name('divisions.export');
     Route::resource('divisions', \App\Http\Controllers\DivisionController::class);
+
+    Route::post('positions/import', [\App\Http\Controllers\PositionController::class, 'import'])->name('positions.import');
+    Route::get('positions/export', [\App\Http\Controllers\PositionController::class, 'export'])->name('positions.export');
     Route::resource('positions', \App\Http\Controllers\PositionController::class);
     
+    Route::post('staffs/import', [\App\Http\Controllers\StaffController::class, 'import'])->name('staffs.import');
+    Route::get('staffs/export', [\App\Http\Controllers\StaffController::class, 'export'])->name('staffs.export');
     Route::resource('staffs', \App\Http\Controllers\StaffController::class);
+
+    Route::post('kategori-surats/import', [\App\Http\Controllers\KategoriSuratController::class, 'import'])->name('kategori-surats.import');
+    Route::get('kategori-surats/export', [\App\Http\Controllers\KategoriSuratController::class, 'export'])->name('kategori-surats.export');
     Route::resource('kategori-surats', \App\Http\Controllers\KategoriSuratController::class);
     
     Route::resource('users', \App\Http\Controllers\UserController::class);

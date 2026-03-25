@@ -7,6 +7,9 @@ use App\Models\Division;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\StaffsExport;
+use App\Imports\StaffsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StaffController extends Controller
 {
@@ -49,5 +52,17 @@ class StaffController extends Controller
     {
         $staff->delete();
         return response()->json(['success' => true, 'message' => 'Staff berhasil dihapus.']);
+    }
+
+    public function export()
+    {
+        return Excel::download(new StaffsExport, 'staffs.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|mimes:xlsx,xls,csv']);
+        Excel::import(new StaffsImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Data staff berhasil diimpor.');
     }
 }
